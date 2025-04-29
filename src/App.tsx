@@ -11,9 +11,8 @@ function App() {
   return (
     <>
     <Provider store={store}>
-
-      <Header />
       <BrowserRouter>
+      <Header />
         <Routes>
           <Route index element={<Login />}/>
           <Route path='dashboard' element={

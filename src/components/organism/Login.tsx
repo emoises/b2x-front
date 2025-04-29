@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Input } from "../atoms/Input";
 import { Button } from "../atoms/Button";
 import { useNavigate } from "react-router";
-import { AppDispatch, RootState } from "../../redux/auth.store";
+import { AppDispatch } from "../../redux/auth.store";
 import { useDispatch } from "react-redux";
 import { loadUserAsync, loginAsync } from "../../redux/auth.slice";
-import { useSelector } from "react-redux";
 import { useAppSelector } from "../../redux/auth.hook";
+import styles from './Login.module.css'
 
 export default function Login() {
   const dispatch: AppDispatch = useDispatch();
@@ -45,6 +45,8 @@ export default function Login() {
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard');
+    } else {
+      navigate('/');
     }
   }, [isAuthenticated, navigate]);
 
@@ -52,49 +54,43 @@ export default function Login() {
   useEffect(() => {
     if (error) {
       navigate('/');
-      alert('Usuário não autenticado');
     }
   }, [error, navigate]);
 
   if(loading) return <h2>Loading</h2>
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-2xl shadow-md w-full max-w-sm"
-      >
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2" htmlFor="email">
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <h2 className={styles.title}>Login</h2>
+        <div>
+          <label className={styles.label} htmlFor="email">
             Email
           </label>
           <Input
             id="email"
+            className={styles.input}
             type="email"
-            value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Digite seu email"
             required
-          />
+            />
         </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2" htmlFor="password">
+        <div>
+          <label className={styles.label} htmlFor="password">
             Senha
           </label>
           <Input
             id="password"
+            className={styles.input}
             type="password"
-            value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Digite sua senha"
             required
           />
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className={styles.button}>
           Entrar
         </Button>
       </form>
     </div>
-  );
+  )
 }

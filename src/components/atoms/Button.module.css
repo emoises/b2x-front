@@ -1,0 +1,21 @@
+.button {
+  background-color: #33aacc; /* Azul bonito */
+  color: white; /* Agora correto */
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0.5rem 1rem; /* Substituindo height fixa por padding */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: #2a99b8; /* Azul mais escuro no hover */
+  transform: translateY(-2px);
+}
+
+.button:active {
+  background-color: #237d97; /* Azul ainda mais escuro ao clicar */
+  transform: translateY(0);
+}

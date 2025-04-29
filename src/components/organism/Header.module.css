@@ -1,8 +1,38 @@
 .container {
-  background-color: red;
+  background-color: #c2d9df;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
   height: 4rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra sutil para destacar o header */
+  font-weight: 600;
+}
+
+.username {
+  background-color: #f2f5f5;
+  border: 1px solid #d1d5d8;
+  height: 2.5rem; /* Um pouco maior para melhorar a proporção */
+  width: 2.5rem;
+  border-radius: 50%;
+  margin-right: 0.75rem; /* Deixei menor pra ficar mais compacto */
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: bold;
+  color: #333;
+  cursor: default;
+}
+
+.username:hover {
+  background-color: #e6eaea;
+  transform: scale(1.05); /* Pequeno efeito de zoom no hover */
+}
+
+.userContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Ao invés de usar margin-right manual no username, uso gap que é mais elegante */
 }

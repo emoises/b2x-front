@@ -2,62 +2,53 @@ import { useEffect, useState } from "react";
 import { Input } from "../atoms/Input";
 import { Button } from "../atoms/Button";
 import { useNavigate } from "react-router";
-import { AppDispatch } from "../../redux/auth.store";
+import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
-import { loadUserAsync, loginAsync } from "../../redux/auth.slice";
-import { useAppSelector } from "../../redux/auth.hook";
+import { loadUserAsync, loginAsync } from "../../redux/auth/auth.slice";
+import { useAppSelector } from "../../redux/hooks";
 import styles from './Login.module.css'
 
 export default function Login() {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate()
-  const { user, error, loading, isAuthenticated } = useAppSelector(state => state.auth);
+  const { loading, isAuthenticated } = useAppSelector(state => state.auth);
 
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('email', email)
-    console.log('password', password)
+    e.preventDefault();  // Impede o submit do formulário
 
-    const resultAction = await dispatch(loginAsync({ email, password }))
+    // Verifique se o botão de "Register" não deve acionar este método
+    const resultAction = await dispatch(loginAsync({ email, password }));
 
     if (loginAsync.fulfilled.match(resultAction)) {
-      navigate('/dashboard')
+      navigate('/dashboard');
+    } else {
+      console.error('Error logging in:', resultAction.payload);
     }
-    else {
-      console.error('Erro ao logar:', resultAction.payload)
-    }
-  }
+  };
+
 
   useEffect(() => {
-    dispatch(loadUserAsync());
-  }, [dispatch]);
-
-  useEffect(() => {
-    console.log('User:', user);
-    console.log('Error:', error);
-    console.log('Loading:', loading);
-  }, [user, error, loading]);
+    if(!isAuthenticated) {
+      dispatch(loadUserAsync());
+    }
+  }, [dispatch, isAuthenticated]);
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard');
-    } else {
-      navigate('/');
     }
   }, [isAuthenticated, navigate]);
 
+  if(loading) return <h2>Loading...</h2>
 
-  useEffect(() => {
-    if (error) {
-      navigate('/');
-    }
-  }, [error, navigate]);
-
-  if(loading) return <h2>Loading</h2>
+  const handleRegister = (e: React.MouseEvent) => {
+    e.preventDefault();  // Garante que o evento não seja propagado como um submit
+    navigate('/register');
+  };
 
   return (
     <div className={styles.container}>
@@ -77,7 +68,7 @@ export default function Login() {
         </div>
         <div>
           <label className={styles.label} htmlFor="password">
-            Senha
+            Password
           </label>
           <Input
             id="password"
@@ -88,8 +79,12 @@ export default function Login() {
           />
         </div>
         <Button type="submit" className={styles.button}>
-          Entrar
+          Login
         </Button>
+        <Button type="button" onClick={handleRegister} className={styles.button}>
+          Registrar
+        </Button>
+
       </form>
     </div>
   )

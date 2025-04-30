@@ -1,14 +1,18 @@
-import { Navigate } from "react-router"
+import { Navigate, useLocation } from "react-router"
+import { useAppSelector } from "../../redux/hooks";
 
 type ProtectedRouteProps = {
-  user: boolean;
   children: React.ReactNode;
 }
 
-export default function ProtectedRoute({ user, children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { isAuthenticated } = useAppSelector(state => state.auth);
+  const location = useLocation();
+
+
   console.log('this route is protected!')
-  if(!user) {
-    return <Navigate to='/' replace />
+  if(!isAuthenticated) {
+    return <Navigate to='/' state={{ from: location }} replace />
   }
   return <>{children}</>;
 }

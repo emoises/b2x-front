@@ -1,14 +1,14 @@
 // src/redux/auth/auth.store.ts
 
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { authAPI } from '../services/auth.service'
+import { authAPI } from '../../services/auth.service'
 
-interface User {
+export interface User {
   id: string
   email: string
 }
 
-interface AuthState {
+export interface AuthState {
   user: User | null
   isAuthenticated: boolean
   loading: boolean
@@ -75,17 +75,18 @@ const authSlice = createSlice({
         state.error = action.payload as string
       })
       .addCase(loadUserAsync.pending, (state) => {
-        state.loading = true
-        state.error = null
+        state.loading = true;
       })
-      .addCase(loadUserAsync.fulfilled, (state, action: PayloadAction<User>) => {
-        state.loading = false
-        state.user = action.payload
-        state.isAuthenticated = true
+      .addCase(loadUserAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
       })
       .addCase(loadUserAsync.rejected, (state, action) => {
-        state.loading = false
-        state.error = 'Erro ao carregar usuário'
+        state.loading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+        state.error = action.payload || 'Erro ao carregar usuário';
       })
   },
 })

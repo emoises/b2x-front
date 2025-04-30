@@ -1,7 +1,7 @@
-import { useAppSelector } from '../../redux/auth.hook';
+import { useAppSelector } from '../../redux/hooks';
 import styles from './Header.module.css'
-import { logout } from '../../redux/auth.slice';
-import { AppDispatch } from '../../redux/auth.store';
+import { logout } from '../../redux/auth/auth.slice';
+import { AppDispatch } from '../../redux/store';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
